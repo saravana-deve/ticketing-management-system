@@ -1,0 +1,144 @@
+﻿@model TMS.Models.Sub_Category.Sub_Category
+
+@{
+    ViewBag.Title = "Sub Category Master";
+    Layout = "~/Views/Shared/_MasterPage.cshtml";
+}
+<style>
+    .content {
+        padding-top: .1rem !important;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row d-flex justify-content-center">
+        <h4 style="color:#1d1f26; font-weight:bold;">@ViewBag.Title</h4>
+    </div>
+    <div class="card card-default mb-2">
+        <div class="card-body px-1 pt-1 pb-2">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.Sub_Cate_Code, htmlAttributes: new { @class = "control-label " })
+                    @Html.EditorFor(model => model.Sub_Cate_Code, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                    @Html.HiddenFor(model => model.Sub_Cate_Code, new { @id = "Temp_DepC" })
+                    @Html.HiddenFor(model => model.Btn, new { @id = "btn_type" })
+                    @Html.ValidationMessageFor(model => model.Sub_Cate_Code, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.Sub_Cate_Name, htmlAttributes: new { @class = "control-label " })
+                    @Html.EditorFor(model => model.Sub_Cate_Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Sub_Cate_Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label " })
+                    @Html.DropDownListFor(model => model.Category, Model.Cat_List == null ? Enumerable.Empty<SelectListItem>() : Model.Cat_List, "---- Select ----", new { @class = "form-control pb-1", @style = " padding-top: 0.20rem !important;" })
+                    @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.R_Approval, htmlAttributes: new { @class = "control-label " })
+                    @Html.DropDownListFor(model => model.R_Approval, Model.R_App_List == null ? Enumerable.Empty<SelectListItem>() : Model.R_App_List, "---- Select ----", new { @class = "form-control pb-1", @style = " padding-top: 0.20rem !important;" })
+                    @Html.ValidationMessageFor(model => model.R_Approval, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-sm-6 col-lg-3">
+
+                    <input type="submit" value="@Model.Btn" class="btn btn-success btn-sm" id="btn_Save" style="width: 98px;margin-top:1.1rem !important;" />
+                    <input type="button" value="Clear" class="btn btn-dark btn-sm" style="margin-top:1.1rem !important;" onclick="location.reload(true);" />
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-default mb-1">
+        <div class="table-responsive" style="max-height:calc(95vh - 247px);scrollbar-width: thin;">
+            <table class="table table-bordered">
+                <thead>
+                    <tr style="position: sticky !important; top: 0px;background-color: #ffd6d6;">
+                        <th scope="col">S.No</th>
+                        <th scope="col">Sub Category Code</th>
+                        <th scope="col">Sub Category</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Approval</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.List != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model.List)
+                        {
+                            <tr>
+                                <td scope="row">
+                                    @i
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Sub_Cate_Code)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Sub_Cate_Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Category_Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.R_Approval)
+                                </td>
+                                <th class="text-center">
+                                    <a onclick="Edit('@item.Sub_Cate_Code','@item.Sub_Cate_Name','@item.Category','@item.R_Approval')">
+                                        <i class="mdi mdi-open-in-new mx-2 Iconfor_ED"></i>
+                                    </a>
+                                    <a href="@Url.Action("Delete",new {Sub_Cate_Code=item.Sub_Cate_Code,Sub_Cate_Name=item.Sub_Cate_Name })" onclick="return confirm('Are Sure wants to Delete!');">
+                                        <i class="mdi mdi-close text-danger"></i>
+
+                                    </a>
+
+                                </th>
+
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td scope="row" colspan="6" class="text-center font-weight-bold " style="background:#fefbee;">
+                                No Records!
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@if (TempData["Sub_Cy_Alert"] != null)
+{
+    <script>
+        $(()=> {
+
+            Toast_Alert('@TempData["Sub_Cy_Alert"]','@TempData["Alert_Type"]')
+
+        })
+
+    </script>
+}
+<script>
+    $(document).ready(() => {
+
+        //$('#CNF_Modal').modal('show')
+    });
+    function Edit(Sub_Cate_Code, Sub_Cate_Name, Category,R_Approval) {
+
+        $('#Sub_Cate_Code').val(Sub_Cate_Code);
+        $('#Temp_DepC').val($('#Sub_Cate_Code').val())
+        $('#Sub_Cate_Name').val(Sub_Cate_Name);
+        $('#Category').val(Category);
+        $('#R_Approval').val(R_Approval);
+        $('#btn_type').val('Update')
+        $('#btn_Save').val($('#btn_type').val());
+    }
+</script>

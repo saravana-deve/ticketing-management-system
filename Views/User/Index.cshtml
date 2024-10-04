@@ -1,0 +1,242 @@
+﻿@model TMS.Models.User.User
+@{
+    ViewBag.Title = "User Master";
+    Layout = "~/Views/Shared/_MasterPage.cshtml";
+}
+<style>
+    .content {
+        padding-top: .1rem !important;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row d-flex justify-content-center">
+        <h4 style="color:#1d1f26; font-weight:bold;">@ViewBag.Title</h4>
+    </div>
+    <div class="card card-default mb-2">
+        <div class="card-body px-1 pt-1 pb-2">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.Ucode, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Ucode, new { htmlAttributes = new { @class = "form-control", @Autofocus = "autofocus", @Maxlength = 15, @onkeypress = "return /[a-zA-Z0-9@_]/i.test(event.key)" } })
+                    @Html.HiddenFor(model => model.Ucode, new { @id = "TPUcode" })
+                    @Html.HiddenFor(model => model.Btn, new { @id = "btn_type" })
+                    @Html.ValidationMessageFor(model => model.Ucode, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.UName, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.UName, new { htmlAttributes = new { @class = "form-control", @Maxlength = 100, @onkeypress = "return /[a-zA-Z ]/i.test(event.key)" } })
+                    @Html.ValidationMessageFor(model => model.UName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.Pword, htmlAttributes: new { @class = "control-label" })
+                    <div style="height:28px;position:relative;">
+                        @Html.EditorFor(model => model.Pword, new { htmlAttributes = new { @class = "form-control", @onkeypress = "return /[a-zA-Z0-9 @&_-]/i.test(event.key)", @style = "-webkit-text-security: Square;" } })
+
+                        <i class="mdi mdi-eye  field-icon toggle-password" onclick="Eye(this, 'Pword')"></i>
+
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Pword, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.Contact, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control", @Maxlength = 10, @onkeypress = "return /[0-9]/i.test(event.key)" } })
+                    @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.Rights, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.Rights, Model.Right_List == null ? Enumerable.Empty<SelectListItem>() : Model.Right_List, "---- Select ----", new { @class = "form-control pb-1", @style = " padding-top: 0.20rem !important;" })
+                    @Html.ValidationMessageFor(model => model.Rights, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.Dept_Code, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.Dept_Code, Model.Dep_List, "---- Select ----", new { @class = "form-control pb-1", @style = " padding-top: 0.20rem !important;" })
+                    @Html.ValidationMessageFor(model => model.Dept_Code, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.Desi_Code, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.Desi_Code, Model.Desi_List, "---- Select ----", new { @class = "form-control pb-1", @style = " padding-top: 0.20rem !important;" })
+                    @Html.ValidationMessageFor(model => model.Desi_Code, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.Stn_Code, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.Stn_Code, Model.Stn_List, "---- Select ----", new { @class = "form-control pb-1", @style = " padding-top: 0.20rem !important;", @onchange = "Get_Branch($('#Stn_Code :selected').val())" })
+                    @Html.ValidationMessageFor(model => model.Stn_Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.BCode, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.BCode, Model.Branch_List == null ? Enumerable.Empty<SelectListItem>() : Model.Branch_List, "---- Select ----", new { @class = "form-control pb-1", @style = " padding-top: 0.20rem !important;" })
+                    @Html.ValidationMessageFor(model => model.BCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-3 col-sm-3 col-lg-3">
+
+                    <input type="submit" value="@Model.Btn" class="btn btn-success btn-sm" id="btn_Save" style="width: 98px;margin-top:1.0rem !important;" />
+                    <input type="button" value="Clear" class="btn btn-dark btn-sm" style="margin-top:1.0rem !important;" onclick="location.reload(true);" />
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="card card-default mb-1">
+        <div class="table-responsive" style="max-height:calc(95vh - 247px);scrollbar-width: thin;">
+            <table class="table table-bordered">
+                <thead>
+                    <tr style="position: sticky !important; top: 0px;background-color: #ffd6d6;">
+                        <th scope="col">S.No</th>
+                        <th scope="col">User Code</th>
+                        <th scope="col">User Name</th>
+                        <th scope="col">Department Name</th>
+                        <th scope="col">Designation Name</th>
+                        <th scope="col">Rights Name</th>
+                        <th scope="col">Station Code</th>
+                        <th scope="col">Branch Code</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.List != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model.List)
+                        {
+                            <tr>
+                                <td scope="row">
+                                    @i
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Ucode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Dept_Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Desi_Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Rights_Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Stn_Code)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BCode)
+                                </td>
+                                <th class="text-center">
+                                    <a onclick="Edit('@item.Ucode','@item.Pword','@item.UName','@item.Dept_Code','@item.Desi_Code','@item.Stn_Code','@item.BCode','@item.Rights','@item.Contact')">
+                                        <i class="mdi mdi-open-in-new mx-2 Iconfor_ED"></i>
+                                    </a>
+                                    <a href="@Url.Action("Delete",new {Ucode=item.Ucode,UName=item.UName })" onclick="return confirm('Are Sure wants to Delete!');">
+                                        <i class="mdi mdi-close text-danger"></i>
+
+                                    </a>
+
+                                </th>
+
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td scope="row" colspan="8" class="text-center font-weight-bold " style="background:#fefbee;">
+                                No Records!
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+@if (TempData["UM_Alert"] != null)
+{
+    <script>
+        $(()=> {
+
+            alert('@TempData["UM_Alert"]')
+
+        })
+
+    </script>
+}
+<script>
+    var XSess = '@Session["UserCode"]';
+
+    $(document).ready(() => {
+
+    });
+
+    function Get_Branch(Stn_Code) {
+
+        $.ajax({
+            url: '/User/Get_Branch',
+            contentType: 'application/json; charset=utf-8;',
+            async: false,
+            dataType: 'json',
+            data: '{"Stn_Code" : "' + Stn_Code + '","Type" : "GET_BRANCH_CODE"}',
+            method: 'post',
+            success: function (data) {
+
+                $("#BCode").html("<option value=''>---- Select ----</option>")
+                if (typeof (data) != 'string') {
+
+                    for (var i = 0; i < data.length; i++) {
+                        $("#BCode").append("<option value=" + data[i].SUB_BRANCH_CODE + ">" + data[i].SUB_BRANCH_CODE + "</option>");
+                    }
+                }
+                else
+                    alert(data);
+
+            },
+            error: function (xhr, status, error) {
+
+                alert(error)
+
+            }
+
+        });
+    }
+    function Edit(Ucode, Pword, UName, Dept_Code, Desi_Code, Stn_Code, BCode,Rights,Contact) {
+
+        $('#Ucode').val(Ucode);
+        $('#Ucode').prop('disabled', true);
+        $('#TPUcode').val($('#Ucode').val());
+        $('#Pword').val(Pword);
+        $('#UName').val(UName).focus();
+        $('#Dept_Code').val(Dept_Code);
+        $('#Desi_Code').val(Desi_Code);
+        $('#Stn_Code').val(Stn_Code);
+        $('#Rights').val(Rights);
+        $('#Contact').val(Contact);
+        Get_Branch(Stn_Code);
+        $('#BCode').val(BCode);
+        $('#btn_type').val('Update')
+        $('#btn_Save').val($('#btn_type').val());
+
+        var x = document.getElementById('Pword');
+        $('.toggle-password').removeClass("mdi-eye-off");
+        $('.toggle-password').addClass("mdi-eye");
+
+        if (XSess != Ucode) {
+
+            $('.field-icon').hide();
+            x.style["-webkit-text-security"] = 'Square';
+        }
+        else
+            $('.field-icon').show();
+
+    }
+</script>

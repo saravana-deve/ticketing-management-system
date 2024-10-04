@@ -1,0 +1,130 @@
+﻿@model TMS.Models.Category.Category
+
+@{
+    ViewBag.Title = "Category Master";
+    Layout = "~/Views/Shared/_MasterPage.cshtml";
+}
+<style>
+    .content {
+        padding-top: .1rem !important;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row d-flex justify-content-center">
+        <h4 style="color:#1d1f26; font-weight:bold;">@ViewBag.Title</h4>
+    </div>
+    <div class="card card-default mb-2">
+        <div class="card-body px-1 pt-1 pb-2">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.Category_Code, htmlAttributes: new { @class = "control-label " })
+                    @Html.EditorFor(model => model.Category_Code, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                    @Html.HiddenFor(model => model.Category_Code, new { @id = "Temp_DepC" })
+                    @Html.HiddenFor(model => model.Btn, new { @id = "btn_type" })
+                    @Html.ValidationMessageFor(model => model.Category_Code, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.Category_Name, htmlAttributes: new { @class = "control-label " })
+                    @Html.EditorFor(model => model.Category_Name, new { htmlAttributes = new { @class = "form-control", @autofocus = "autofocus", @Maxlength = 50, @onkeypress = "return /[a-zA-Z ]/i.test(event.key)" } })
+                    @Html.ValidationMessageFor(model => model.Category_Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.MDept_Code, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.MDept_Code, Model.Dep_List == null ? Enumerable.Empty<SelectListItem>() : Model.Dep_List, "---- Select ----", new { @class = "form-control pb-1", @style = " padding-top: 0.20rem !important;" })
+                    @Html.ValidationMessageFor(model => model.MDept_Code, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-3 col-sm-6 col-lg-3">
+
+                    <input type="submit" value="@Model.Btn" class="btn btn-success btn-sm" id="btn_Save" style="width: 98px;margin-top:1.1rem !important;" />
+                    <input type="button" value="Clear" class="btn btn-dark btn-sm" style="margin-top:1.1rem !important;" onclick="location.reload(true);" />
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-default mb-1">
+        <div class="table-responsive" style="max-height:calc(95vh - 247px);scrollbar-width: thin;">
+            <table class="table table-bordered">
+                <thead>
+                    <tr style="position: sticky !important; top: 0px;background-color: #ffd6d6;">
+                        <th scope="col">S.No</th>
+                        <th scope="col">Category Code</th>
+                        <th scope="col">Category Name</th>
+                        <th scope="col">Department Name</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.List != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model.List)
+                        {
+                            <tr>
+                                <td scope="row">
+                                    @i
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Category_Code)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Category_Name)
+                                </td> 
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MDept_Name)
+                                </td>
+                                <th class="text-center">
+                                    <a onclick="Edit('@item.Category_Code','@item.Category_Name','@item.MDept_Code')">
+                                        <i class="mdi mdi-open-in-new mx-2 Iconfor_ED"></i>
+                                    </a>
+                                    <a href="@Url.Action("Delete",new {Category_Code=item.Category_Code,Category_Name=item.Category_Name })" onclick="return confirm('Are Sure wants to Delete!');">
+                                        <i class="mdi mdi-close text-danger"></i>
+
+                                    </a>
+
+                                </th>
+
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td scope="row" colspan="4" class="text-center font-weight-bold " style="background:#fefbee;">
+                                No Records!
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+@if (TempData["Cy_Alert"] != null)
+{
+    <script>
+        $(()=> {
+
+            alert('@TempData["Cy_Alert"]')
+
+        })
+
+    </script>
+}
+<script>
+    $(document).ready(() => {
+
+    });
+    function Edit(Category_Code, Category_Name,MDept_Code) {
+
+        $('#Category_Code').val(Category_Code);
+        $('#Temp_DepC').val($('#Category_Code').val())
+        $('#Category_Name').val(Category_Name);
+        $('#MDept_Code').val(MDept_Code);
+        $('#btn_type').val('Update')
+        $('#btn_Save').val($('#btn_type').val());
+    }
+</script>

@@ -1,0 +1,256 @@
+﻿@model TMS.Models.Ticket.Ticket
+@{
+    ViewBag.Title = "Ticket Master";
+    Layout = "~/Views/Shared/_MasterPage.cshtml";
+}
+<style>
+    .content {
+        padding-top: .1rem !important;
+    }
+</style>
+@using (Html.BeginForm("Index", "Ticket", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row d-flex justify-content-center">
+        <h4 style="color:#1d1f26; font-weight:bold;">@ViewBag.Title</h4>
+    </div>
+    <div class="card card-default mb-2">
+        <div class="card-body px-1 pt-1 pb-2">
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-6">
+                    @Html.LabelFor(model => model.Ticket_id, htmlAttributes: new { @class = "control-label " })
+                    @Html.EditorFor(model => model.Ticket_id, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                    @Html.HiddenFor(model => model.Ticket_id, new { @id = "TPU_Tktid" })
+                    @Html.HiddenFor(model => model.Btn, new { @id = "btn_type" })
+                    @Html.ValidationMessageFor(model => model.Ticket_id, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-6">
+                    @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label " })
+                    @Html.DropDownListFor(model => model.Category, Model.N_List == null ? Enumerable.Empty<SelectListItem>() : Model.N_List, "---- Select ----", new { @class = "form-control pb-1", @style = " padding-top: 0.20rem !important;", @onchange = "Get_Users($('#Category :selected').val())", @Autofocus = "autofocus" })
+                    @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-6">
+                    @Html.LabelFor(model => model.Sub_Category, htmlAttributes: new { @class = "control-label " })
+                    @Html.DropDownListFor(model => model.Sub_Category, Model.Sub_Cate_List == null ? Enumerable.Empty<SelectListItem>() : Model.Sub_Cate_List, "---- Select ----", new { @class = "form-control pb-1", @style = " padding-top: 0.20rem !important;" })
+                    @Html.ValidationMessageFor(model => model.Sub_Category, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    @Html.LabelFor(model => model.Priority, htmlAttributes: new { @class = "control-label " })
+                    @Html.DropDownListFor(model => model.Priority, Model.Priot_List == null ? Enumerable.Empty<SelectListItem>() : Model.Priot_List, "---- Select ----", new { @class = "form-control", @style = " padding-top: 0.20rem !important;padding-bottom: 0.20rem !important;" })
+                    @Html.ValidationMessageFor(model => model.Priority, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    <label class="control-label">Upload Image</label>
+                    @Html.TextBox("file", "", new { type = "file", multiple = "multiple", accept = "image/*" })
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control", @Maxlength = 200, @onkeypress = "return /[a-zA-Z ]/i.test(event.key)" } })
+                    @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    @Html.LabelFor(model => model.NUser, htmlAttributes: new { @class = "control-label " })
+                    @Html.DropDownListFor(model => model.NUser, Model.U_List == null ? Enumerable.Empty<SelectListItem>() : Model.U_List, "---- Select ----", new { @class = "form-control pb-1", @style = " padding-top: 0.20rem !important;" })
+                    @Html.ValidationMessageFor(model => model.NUser, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    @Html.LabelFor(model => model.Contact_No, htmlAttributes: new { @class = "control-label " })
+                    @Html.EditorFor(model => model.Contact_No, new { htmlAttributes = new { @class = "form-control", @Maxlength = 30, @onkeypress = "return /[0-9/]/i.test(event.key)" } })
+                    @Html.ValidationMessageFor(model => model.Contact_No, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    @Html.LabelFor(model => model.Narration, htmlAttributes: new { @class = "control-label " })
+                    @Html.TextAreaFor(model => model.Narration, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Narration, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-lg-6">
+                    <button class="ladda-button btn btn-success btn-sm btn-ladda Loader_On" data-style="zoom-in" style="width:98px;margin-top:1.0rem !important;">
+                        <span id="btn_Save" class="ladda-label">@Model.Btn</span>
+                        <span class="ladda-spinner"></span>
+                    </button>
+                    @*<input type="submit" value="@Model.Btn" class="btn btn-success btn-sm" id="btn_Save" style="width: 98px;margin-top:1.0rem !important;" />*@
+                    <input type="button" value="Clear" class="btn btn-dark btn-sm Loader_On" style="margin-top:1.0rem !important;" onclick="location.reload(true);" />
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-default mb-1">
+        <div class="table-responsive" style="max-height:calc(100vh - 420px);scrollbar-width: thin;">
+            <table class="table table-bordered">
+                <thead>
+                    <tr style="position: sticky !important; top: 0px;background-color: #ffd6d6;">
+                        <th scope="col">S.No</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Ticket Id</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Narration</th>
+                        <th scope="col">Priority</th>
+                        <th scope="col">Station</th>
+                        <th scope="col">Branch</th>
+                        <th scope="col">Department</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.List != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model.List)
+                        {
+                            <tr>
+                                <td scope="row">
+                                    @i
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Ticket_id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Category)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Narration)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Priority)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Frm_Stn_Code)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Frm_BCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Dept_Name)
+                                </td>
+                                <th class="text-center">
+                                    <a onclick="Edit('@item.Ticket_id','@item.Category_Code','@item.Narration','@item.Priority','@item.NUser','@item.Sub_Category','@item.Contact_No')">
+                                        <i class="mdi mdi-open-in-new mx-2 Iconfor_ED"></i>
+                                    </a>
+                                    <a href="@Url.Action("Delete",new {Ucode=item.Ticket_id,UName=item.Frm_Stn_Code })" onclick="return confirm('Are Sure wants to Delete!');">
+                                        <i class="mdi mdi-close text-danger"></i>
+
+                                    </a>
+
+                                </th>
+
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td scope="row" colspan="10" class="text-center font-weight-bold " style="background:#fefbee;">
+                                No Records!
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+@if (TempData["Tkt_Alert"] != null)
+{
+    <script>
+        $(()=> {
+
+            Toast_Alert('@TempData["Tkt_Alert"]','@TempData["Alert_Type"]')
+
+        })
+
+    </script>
+}
+<script>
+    $(document).ready(() => {
+
+    });
+    function Get_Users(Category) {
+
+        if (Category != '') {
+
+            $.ajax({
+                url: '/Ticket/Get_Users',
+                contentType: 'application/json; charset=utf-8;',
+                async: false,
+                dataType: 'json',
+                data: '{"Category" : "' + Category + '","Type" : "GET_USERS_AND_SUB_CATEGORY"}',
+                method: 'post',
+                success: function (data) {
+
+
+                    $("#NUser").html("<option value=''>---- Select ----</option>")
+                    $("#Sub_Category").html("<option value=''>---- Select ----</option>")
+                    if (typeof (data) != 'string') {
+
+                        if (data.Table.length > 0) {
+
+                            for (var i = 0; i < data.Table.length; i++) {
+
+                                $("#NUser").append("<option value=" + data.Table[i].UCODE + ">" + data.Table[i].UNAME + "</option>");
+
+                            }
+
+                        }
+                        if (data.Table1.length > 0) {
+
+                            for (var i = 0; i < data.Table1.length; i++) {
+
+                                $("#Sub_Category").append("<option value=" + data.Table1[i].VALUE + ">" + data.Table1[i].TEXT + "</option>");
+
+                            }
+
+                        }
+
+                        //if () {
+
+                        //}
+
+
+                    }
+                    else
+                        Toast_Alert(data, 'Warning')
+
+                },
+                error: function (xhr, status, error) {
+
+                    Toast_Alert(error, 'Error')
+
+                }
+
+            });
+        }
+        else
+            $("#NUser").html("<option value=''>---- Select ----</option>")
+    }
+    function Edit(Ticket_id, Category_Code, Narration, Priority, NUser, Sub_Category,Contact_No) {
+
+        $('#Ticket_id').val(Ticket_id);
+        $('#TPU_Tktid').val($('#Ticket_id').val())
+        $('#Category').val(Category_Code);
+        Get_Users(Category_Code)
+        $('#Narration').val(Narration);
+        $('#NUser').val(NUser);
+        $('#Contact_No').val(Contact_No);
+        $('#Sub_Category').val(Sub_Category);
+        $('#Priority').val(Priority == "High" ? "1" : Priority == "Medium" ? "2" : "3");
+        $('#btn_type').val('Update')
+        $('#btn_Save').html($('#btn_type').val());
+
+    }
+</script>

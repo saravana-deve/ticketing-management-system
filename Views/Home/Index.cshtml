@@ -1,0 +1,932 @@
+﻿@model TMS.Models.Home.Home
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_MasterPage.cshtml";
+}
+<link href="~/Library/CSS/flatpickr.min.css" rel="stylesheet" />
+<script src="~/Library/Scripts/flatpickr.js"></script>
+<style>
+    .content {
+        padding-top: .1rem !important;
+    }
+
+    /*.card-default {
+        margin-bottom: .5rem !important;
+    }*/
+</style>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <!-- Top Statistics -->
+    @*<div class="row">
+            <div class="col-xl-3 col-sm-6">
+                <div class="card card-default card-mini">
+                    <div class="card-header px-2">
+                        <h2>$18,699</h2>
+                        <div class="dropdown">
+                            <a class="dropdown-toggle icon-burger-mini" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                        <div class="sub-title">
+                            <span class="mr-1">Sales of this year</span> |
+                            <span class="mx-1">45%</span>
+                            <i class="mdi mdi-arrow-up-bold text-success"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-wrapper">
+                            <div>
+                                <div id="spline-area-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="card card-default card-mini">
+                    <div class="card-header px-2">
+                        <h2>$14,500</h2>
+                        <div class="dropdown">
+                            <a class="dropdown-toggle icon-burger-mini" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                        <div class="sub-title">
+                            <span class="mr-1">Expense of this year</span> |
+                            <span class="mx-1">50%</span>
+                            <i class="mdi mdi-arrow-down-bold text-danger"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-wrapper">
+                            <div>
+                                <div id="spline-area-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="card card-default card-mini">
+                    <div class="card-header px-2">
+                        <h2>$4199</h2>
+                        <div class="dropdown">
+                            <a class="dropdown-toggle icon-burger-mini" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                        <div class="sub-title">
+                            <span class="mr-1">Profit of this year</span> |
+                            <span class="mx-1">20%</span>
+                            <i class="mdi mdi-arrow-down-bold text-danger"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-wrapper">
+                            <div>
+                                <div id="spline-area-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="card card-default card-mini">
+                    <div class="card-header px-2">
+                        <h2>$20,199</h2>
+                        <div class="dropdown">
+                            <a class="dropdown-toggle icon-burger-mini" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                        <div class="sub-title">
+                            <span class="mr-1">Revenue of this year</span> |
+                            <span class="mx-1">35%</span>
+                            <i class="mdi mdi-arrow-up-bold text-success"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-wrapper">
+                            <div>
+                                <div id="spline-area-4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>*@
+    <div class="row d-flex justify-content-start" style="padding-left: 16px;">
+        <h4 style="color:#1d1f26; font-weight:bold;">Tickets - Assigned to Me</h4>
+    </div>
+    <div class="row">
+        <!-- Frist box -->
+        <div class="col-xl-3 col-md-6">
+            <div class="card card-default">
+                <div class="d-flex px-1 py-5" style="cursor:pointer;" onclick="GetDasboard_Data($('#Un_Read').text(),'Unread')">
+                    <div class="icon-md bg-secondary rounded-circle mr-3">
+                        <i class="mdi mdi-account-plus-outline"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="h2 d-block" id="Un_Read">0</span>
+                        <p>New</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Second box -->
+        <div class="col-xl-3 col-md-6">
+            <div class="card card-default">
+                <div class="d-flex px-1 py-5" style="cursor:pointer;" onclick="GetDasboard_Data($('#Read').text(),'Read')">
+                    <div class="icon-md bg-success rounded-circle mr-3">
+                        <i class="mdi mdi-table-edit"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="h2 d-block" id="Read">0</span>
+                        <p>Assigned to Me</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Third box -->
+        <div class="col-xl-3 col-md-6">
+            <div class="card card-default">
+                <div class="d-flex px-1 py-5" style="cursor:pointer;" onclick="GetDasboard_Data($('#Ass_Other').text(),'AssignOther')">
+                    <div class="icon-md bg-primary rounded-circle mr-3">
+                        <i class="mdi mdi-content-save-edit-outline"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="h2 d-block" id="Ass_Other">0</span>
+                        <p>Assigned to Others</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fourth box -->
+        <div class="col-xl-3 col-md-6">
+            <div class="card card-default">
+                <div class="d-flex px-1 py-5" style="cursor:pointer;" onclick="GetDasboard_Data($('#Closed').text(),'Closed')">
+                    <div class="icon-md bg-info rounded-circle mr-3">
+                        <i class="mdi mdi-bell"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="h2 d-block" id="Closed">0</span>
+                        <p>Closed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    //Second Dashboard 
+    <div class="row d-flex justify-content-start" style="padding-left: 16px;">
+        <h4 style="color:#1d1f26; font-weight:bold;">Tickets - Registered by Me</h4>
+    </div>
+    <div class="row">
+        <!-- Frist box -->
+        <div class="col-xl-3 col-md-6">
+            <div class="card card-default">
+                <div class="d-flex px-1 py-5" style="cursor:pointer;" onclick="GetDasboard_Data($('#Reg_New').text(),'Reg_New')">
+                    <div class="icon-md bg-secondary rounded-circle mr-3">
+                        <i class="mdi mdi-account-plus-outline"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="h2 d-block" id="Reg_New">0</span>
+                        <p>New</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Second box -->
+        <div class="col-xl-3 col-md-6">
+            <div class="card card-default">
+                <div class="d-flex px-1 py-5" style="cursor:pointer;" onclick="GetDasboard_Data($('#Reg_Under').text(),'Reg_Under')">
+                    <div class="icon-md bg-success rounded-circle mr-3">
+                        <i class="mdi mdi-table-edit"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="h2 d-block" id="Reg_Under">0</span>
+                        <p>Under Process</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Third box -->
+        <div class="col-xl-3 col-md-6">
+            <div class="card card-default">
+                <div class="d-flex px-1 py-5" style="cursor:pointer;" onclick="GetDasboard_Data($('#Reg_More').text(),'Reg_More')">
+                    <div class="icon-md bg-primary rounded-circle mr-3">
+                        <i class="mdi mdi-content-save-edit-outline"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="h2 d-block" id="Reg_More">0</span>
+                        <p>Morethan 72Hrs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fourth box -->
+        <div class="col-xl-3 col-md-6">
+            <div class="card card-default">
+                <div class="d-flex px-1 py-5" style="cursor:pointer;" onclick="GetDasboard_Data($('#Reg_Closed').text(),'Reg_Closed')">
+                    <div class="icon-md bg-info rounded-circle mr-3">
+                        <i class="mdi mdi-bell"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="h2 d-block" id="Reg_Closed">0</span>
+                        <p>Closed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@if (TempData["HMAlert"] != null)
+{
+    <script>
+        $(()=> {
+
+            Toast_Alert('@TempData["HMAlert"]', 'Error')
+        })
+
+    </script>
+}
+<script>
+    var Read = "",date='',Status='',tkt_id=''
+
+    $(document).ready(() => {
+
+        //read the Tickets
+        $('.Dash_Con_Close').click(() => {
+
+            if (Read != "") {
+
+                $.ajax({
+                    url: '/Home/GetData',
+                    contentType: 'application/json; charset=utf-8;',
+                    dataType: 'json',
+                    data: '{"Type" : "UPDATE_NEW_TICKETS"}',
+                    method: 'post',
+                    success: function (data) {
+
+                        if (typeof (data) != 'string') {
+
+                            if (data[0].RESULT == 'UPDATED')
+                                Dash_Count();
+                            else
+                                Toast_Alert('New tickets Not Moved to Assign to Me', 'Error')
+                        }
+                    }
+                });
+            }
+
+        });
+
+        $('#Tkt_Submit').on('click', () => {
+
+            var tkt_id = $('#tkt_id').html().trim();
+
+            View_Tkt_Images(tkt_id)
+
+        });
+
+        $("#imagewindow").click(function () {
+            if (img_fit == 'cover') {
+                $("#imagewindow").css({ "object-fit": "contain" });
+                img_fit = 'contain';
+            } else if (img_fit == 'contain') {
+                $("#imagewindow").css({ "object-fit": "cover" });
+                img_fit = 'cover';
+            }
+        });
+
+        $('#Tkt_VDetails').click(() => {
+
+            if ($('#Tkt_Tbl_details').is(':visible')) {
+
+                // Table is visible, so hide it
+                $('#Tkt_Tbl_details').toggle();
+                $("#Tkt_VDetails").html('Show Details');
+            }
+            else
+                Show_Status();
+
+        });
+
+        $('#Cnf_Ok').click(() => {
+
+            $('#CNF_Modal').toggle(200)
+            Show_loader();
+            $.ajax({
+                url: '/Home/GetData',
+                contentType: 'application/json; charset=utf-8;',
+                dataType: 'json',
+                data: '{"Type" : "DELETE_STATUS","Date" : "' + date + '","Ticket_Id" : "' + tkt_id + '","Status" : "' + Status + '"}',
+                method: 'post',
+                success: function (data) {
+
+                    if (typeof (data) != 'string') {
+
+                        if (data[0].TYPE === 'Success') {
+
+                            Show_Status();
+
+                        }
+                        Toast_Alert(data[0].RESULT, data[0].TYPE)
+
+                    }
+                    else
+                        Toast_Alert(data, 'Error');
+
+                    Hide_loader();
+                },
+                error: function (xhr, status, error) {
+
+                    Hide_loader();
+                    Toast_Alert(error, 'Error')
+
+                }
+
+            });
+
+        });
+
+    });
+    //Dashboard Tile Count Get
+    function Dash_Count() {
+
+        Show_loader();
+        $.ajax({
+            url: '/Home/Dashboard_Count',
+            contentType: 'application/json; charset=utf-8;',
+            dataType: 'json',
+            data: '{"Type" : "DASHBOARD_COUNT"}',
+            method: 'post',
+            success: function (data) {
+
+                if (typeof (data) != 'string') {
+
+                    $('#Un_Read').html(data[0].UNREAD)
+                    $('#Read').html(data[0].READ)
+                    $('#Ass_Other').html(data[0].ASSIGNED_OTHER)
+                    $('#Closed').html(data[0].CLOSED)
+                    $('#Reg_New').html(data[0].NEW)
+                    $('#Reg_Under').html(data[0].UNDER)
+                    $('#Reg_More').html(data[0].MORE)
+                    $('#Reg_Closed').html(data[0].REG_CLOSED)
+                }
+                else
+                    Toast_Alert(data, 'Error')
+
+                Hide_loader();
+            },
+            error: function (error) {
+                Toast_Alert(error, 'Error')
+                Hide_loader();
+            }
+        });
+
+    }
+    //Dashboard Tile Data Get
+    function GetDasboard_Data(Data, Type) {
+
+        if (Data != "0") {
+
+            Show_loader();
+            Read = "";
+            $.ajax({
+                url: '/Home/GetData',
+                contentType: 'application/json; charset=utf-8;',
+                dataType: 'json',
+                data: '{"Type" : "' + Type + '"}',
+                method: 'post',
+                success: function (data) {
+
+                    if (typeof (data) != 'string') {
+
+                        $('#Dash_Content').toggle(200);
+
+                        var tab = "";
+
+                        if (Type == 'Unread') {
+
+                            Read = "Readed";
+                            $('#Modal_Head').html("New Tickets")
+
+                            //tab = "<thead><tr style='font-size:11px;width:100%;max-height:50px;position:sticky;top:0'><th>SNo</th><th>Date</th><th>Ticket Id</th><th>Priority</th><th>Age Days</th><th>Raised By</th><th>Category</th><th>Sub Category</th><th>Status</th></tr></thead>";
+                        }
+                        else if (Type == 'Read') {
+                            //Get_Users()
+                            $('#Modal_Head').html("Assigned to Me")
+                            //tab = "<thead><tr style='font-size:11px;width:100%;max-height:50px;position:sticky;top:0'><th>SNo</th><th>Date</th><th>Ticket Id</th><th>Priority</th><th>Age Days</th><th>Raised By</th><th>Category</th><th>Sub Category</th><th>Status</th></tr></thead>";
+                            //<th>Assigned User</th><th>Assign</th>
+                        }
+                        else if (Type == 'AssignOther') {
+
+                            $('#Modal_Head').html("Assigned Other Tickets")
+                            //tab = "<thead><tr style='font-size:11px;width:100%;max-height:50px;position:sticky;top:0'><th>SNo</th><th>Date</th><th>Ticket Id</th><th>Priority</th><th>Age Days</th><th>Raised By</th><th>Category</th><th>Sub Category</th><th>Status</th></tr></thead>";
+                        }
+                        else if (Type == "Closed") {
+
+                            $('#Modal_Head').html("Closed Tickets")
+                            //tab = "<thead><tr style='font-size:11px;width:100%;max-height:50px;position:sticky;top:0'><th>SNo</th><th>Date</th><th>Ticket Id</th><th>Priority</th><th>Age Days</th><th>Raised By</th><th>Category</th><th>Sub Category</th><th>Status</th></tr></thead>";
+                        }
+                        else if (Type == "Reg_New")
+                            $('#Modal_Head').html("Registered New Tickets");
+                        else if (Type == "Reg_Under")
+                            $('#Modal_Head').html("Under Process Tickets");
+                        else if (Type == "Reg_More")
+                            $('#Modal_Head').html("Morethan 72Hrs Tickets");
+                        else if (Type == "Reg_Closed")
+                            $('#Modal_Head').html("Registered Closed Tickets");
+
+                        
+                            tab = "<thead><tr style='font-size:11px;width:100%;max-height:50px;position:sticky;top:0'><th>SNo</th><th>Date</th><th>Ticket Id</th><th>Priority</th><th>Age Days</th><th>Raised By</th><th>Category</th><th>Sub Category</th><th>Status</th></tr></thead>";
+
+                        tab += "<tbody>";
+
+                        for (i = 0; i < data.length; i++) {
+
+                            var SNo = ((i + 1).toString()).length == 1 ? "0" + (i + 1) : (i + 1);
+
+                            //if (Type == 'Unread')
+                            //    tab += "<tr class='table table-light' style='font-size:11px; width:200px;'><td>" + SNo + "</td><td>" + data[i].DATE + "</td><td style='cursor:pointer;color:blue;' onclick='Ticket_Details(&apos;" + data[i].TICKET_ID + "&apos;,&apos;" + data[i].STATUS + "&apos;)'>" + data[i].TICKET_ID + "</td><td style='color:" + (data[i].PRIORITY == "1" ? "#FF0000" : data[i].PRIORITY == "2" ? "#FFA500" : "#008000") + ";'>" + (data[i].PRIORITY == "1" ? "High" : data[i].PRIORITY == "2" ? "Medium" : "Low") + "</td><td>" + data[i].AGE_DAYS + "</td><td>" + data[i].RAISED_BY + "</td><td>" + data[i].CATE_NAME + "</td><td>" + data[i].SUB_CATE_NAME + "</td><td>" + data[i].STATUS + "</td></tr>";
+                            //else if (Type == 'Read')
+                            //    tab += "<tr class='table table-light' style='font-size:11px; width:200px;'><td>" + SNo + "</td><td>" + data[i].DATE + "</td><td style='cursor:pointer;color:blue;' onclick='Ticket_Details(&apos;" + data[i].TICKET_ID + "&apos;,&apos;" + data[i].STATUS + "&apos;)'>" + data[i].TICKET_ID + "</td><td style='color:" + (data[i].PRIORITY == "1" ? "#FF0000" : data[i].PRIORITY == "2" ? "#FFA500" : "#008000") + ";'>" + (data[i].PRIORITY == "1" ? "High" : data[i].PRIORITY == "2" ? "Medium" : "Low") + "</td><td>" + data[i].AGE_DAYS + "</td><td>" + data[i].RAISED_BY + "</td><td>" + data[i].CATE_NAME + "</td><td>" + data[i].SUB_CATE_NAME + "</td><td>" + data[i].STATUS + "</td></tr>";
+                            //else if (Type == 'AssignOther')
+                            //    tab += "<tr class='table table-light' style='font-size:11px; width:200px;'><td>" + SNo + "</td><td>" + data[i].DATE + "</td><td style='cursor:pointer;color:blue;' onclick='Ticket_Details(&apos;" + data[i].TICKET_ID + "&apos;,&apos;" + data[i].STATUS + "&apos;)'>" + data[i].TICKET_ID + "</td><td style='color:" + (data[i].PRIORITY == "1" ? "#FF0000" : data[i].PRIORITY == "2" ? "#FFA500" : "#008000") + ";'>" + (data[i].PRIORITY == "1" ? "High" : data[i].PRIORITY == "2" ? "Medium" : "Low") + "</td><td>" + data[i].AGE_DAYS + "</td><td>" + data[i].RAISED_BY + "</td><td>" + data[i].CATE_NAME + "</td><td>" + data[i].SUB_CATE_NAME + "</td><td>" + data[i].STATUS + "</td></tr>";
+
+                            //else
+                                tab += "<tr class='table table-light' style='font-size:11px; width:200px;'><td>" + SNo + "</td><td>" + data[i].DATE + "</td><td style='cursor:pointer;color:blue;' onclick='Ticket_Details(&apos;" + data[i].TICKET_ID + "&apos;,&apos;" + data[i].STATUS + "&apos;)'>" + data[i].TICKET_ID + "</td><td style='color:" + (data[i].PRIORITY == "1" ? "#FF0000" : data[i].PRIORITY == "2" ? "#FFA500" : "#008000") + ";'>" + (data[i].PRIORITY == "1" ? "High" : data[i].PRIORITY == "2" ? "Medium" : "Low") + "</td><td>" + data[i].AGE_DAYS + "</td><td>" + data[i].RAISED_BY + "</td><td>" + data[i].CATE_NAME + "</td><td>" + data[i].SUB_CATE_NAME + "</td><td>" + data[i].STATUS + "</td></tr>";
+
+                        }
+
+                        tab += "</tbody>";
+
+                        $("#Tbl_Dash").html(tab);
+                        $("#Tbl_Dash th").css("border", "none");
+
+                    }
+                    else
+                        Toast_Alert(data, 'Error')
+
+
+                    Hide_loader();
+                },
+                error: function (error) {
+
+                    Hide_loader();
+                    $('#Dash_Content').toggle(200);
+                    Toast_Alert(error, 'Error')
+                }
+
+            });
+        }
+    }
+    //Assign Users Get in Dropdown
+    function Get_Users() {
+
+        $.ajax({
+            url: '/Home/GetData',
+            contentType: 'application/json; charset=utf-8;',
+            //async: false,
+            dataType: 'json',
+            data: '{"Type" : "GET_USERS"}',
+            method: 'post',
+            success: function (data) {
+
+                $(".Users").html("<option value=''>---- Select ----</option>")
+
+                for (var i = 0; i < data.length; i++) {
+                    $(".Users").append($("<option></option>").val(data[i].UCODE).html(data[i].UNAME))
+                }
+            },
+            error: function (xhr, status, error) {
+
+                Toast_Alert(error, 'Error')
+
+            }
+
+        });
+    }
+    //Status Get in Dropdown
+    function Get_Status() {
+
+        $.ajax({
+            url: '/Home/GetData',
+            contentType: 'application/json; charset=utf-8;',
+            //async: false,
+            dataType: 'json',
+            data: '{"Type" : "GET_STATUS"}',
+            method: 'post',
+            success: function (data) {
+
+                $("#Tkt_Status").html("<option value=''>---- Select ----</option>")
+
+                for (var i = 0; i < data.length; i++) {
+                    $("#Tkt_Status").append($("<option></option>").val(data[i].STATUS_CODE).html(data[i].STATUS_NAME))
+                }
+            },
+            error: function (xhr, status, error) {
+
+                Toast_Alert(error, 'Error')
+
+            }
+
+        });
+    }
+    //Fetch the Ticket Details Modal
+    function Ticket_Details(Ticket_Id, Status) {
+
+        $('#Tkt_Modal_Head').html('Ticket Details')
+        Show_loader();
+        $.ajax({
+            url: '/Home/GetData',
+            contentType: 'application/json; charset=utf-8;',
+            dataType: 'json',
+            async: false,
+            data: '{"Type" : "TICKET_DETAILS","Ticket_Id" : "' + Ticket_Id + '"}',
+            method: 'post',
+            success: function (data) {
+
+                if (typeof (data) != 'string') {
+
+                    $('#Tkt_SubModal').toggle(200)
+                    $('#Tkt_Modal_Head').css('width', '13%');
+                    $('#BlinkModalStatus').css('width', '83%');
+
+                    var tab = "", Upcontent = "";
+
+                    //if (data[0].REMARKS != "" && data[0].REMARKS != null)
+                    //    $('#BlinkModalStatus').html('LAST STATUS: ' + data[0].REMARKS);
+                    //else
+                    //    $('#BlinkModalStatus').html('');
+
+                    tab += "<div class='row m-0' style='line-height:2;'><div class='col-lg-8 d-flex'><div id='tkt_id' style='font-size: 16px; color: green;font-weight: 600;'>" + data[0].TICKET_ID + "</div><div style='font-size: 16px; color: green;font-weight: 600;'>&nbsp;&nbsp;&nbsp;" + data[0].DATE + "</div></div><div class='col-lg-4'><div style='font-size: 15px;color: black;'>Raised By   &nbsp;&nbsp;&nbsp;: <span id='tkt_Rise' style='color: red;'>" + data[0].RAISED_BY + "<span style='font-size:8px;color:black;'>&nbsp;(" + data[0].FROM_DEPT + ")</span></span></div></div></div>";
+
+                    tab += "<div class='row m-0'><div class='col-lg-8'></div><div class='col-lg-4'><div style='font-size: 15px;color: black;'>Contact No : <span id='tkt_contact' style='color: red;font-size: 12px;'>" + data[0].CONTACT_NO + "</span></div></div></div>";
+
+                    tab += "<div class='row m-0'><div class='col-12 col-md-6 col-lg-6 pr-0' ><span class='tkt_content_head'>Category</span><span class='tkt_Subcontent'>: " + data[0].CATE_NAME + "</span></div><div class='col-12 col-md-6 col-lg-6 pr-0' ><span class='tkt_content_head'>Sub Category</span><span class='tkt_Subcontent'>: " + data[0].SUB_CATE_NAME + "</span></div></div>";
+
+                    tab += "<div class='row m-0'><div class='col-12 col-md-6 col-lg-6 pr-0' ><span class='tkt_content_head'>Priority</span><span class='tkt_Subcontent'>: " + (data[0].PRIORITY == "1" ? "High" : data[0].PRIORITY == "2" ? "Medium" : "Low") + "</span></div><div class='col-12 col-md-6 col-lg-6 pr-0' ><span class='tkt_content_head'>Assigned By</span><span class='tkt_Subcontent'>: " + data[0].ASSIGNED_FROM + "</span></div></div>";
+                    tab += "<div class='row m-0'> <div class='col-12 col-md-6 col-lg-6 pr-0' ><span class='tkt_content_head'>From Station</span><span class='tkt_Subcontent'>: " + data[0].FROM_STN + "</span></div><div class='col-12 col-md-6 col-lg-6 pr-0' ><span class='tkt_content_head'>From Branch</span><span class='tkt_Subcontent'>: " + data[0].FROM_BRANCH + "</span></div></div>";
+
+                    tab += "<div class='row m-0'><div class='col-12 col-md-6 col-lg-6 pr-0' ><span class='tkt_content_head'>To Department</span><span class='tkt_Subcontent'>: " + data[0].TO_DEPT + "</span></div><div class='col-12 col-md-6 col-lg-6 pr-0' ><span class='tkt_content_head'>Closed By</span><span class='tkt_Subcontent' id='Tkt_ClBy'>: " + data[0].CLOSED_BY + "</span></div></div>";
+                    tab += "<div class='row m-0'><div class='col-12 col-md-6 col-lg-6 pr-0' ><span class='tkt_content_head'>Closed On</span><span class='tkt_Subcontent'>: " + data[0].CLOSED_DATE + "</span></div></div>";
+
+                    tab += "<div class='row m-0 d-flex'><div class='col-12 col-md-12 col-lg-12 pr-0'><span class='tkt_content_head'>Narration</span><div style='max-height: calc(100vh - 488px);scrollbar-width: thin;overflow: auto;display: inline-flex;border: 1px solid #d1d1d1;border-radius: 5px;padding:7px;width:90%;' class='border'><span class='tkt_Subcontent' style='word-break:break-word;'>: " + data[0].NARRATION + "</span></div></div></div>";
+                    Get_Users()
+                    Get_Status();
+                    tab += "<div class='row m-0 mt-2' id='Tkt_Tbl' style='padding-left: 15px;padding-right: 6px;'></div>";
+
+                    if (Status != "Closed") {
+                        Upcontent = "<div class='row m-0 mt-2'><div class='col-12 col-lg-4 col-md-12'><div class='row m-0 border mt-2' style='border: 1px solid #acb6c6 !important;border-radius: 11px;background: #fff3e3;'><div class='col-8'><label class='control-label' style='background: white;position: absolute;top: -9px;bottom: 62px;'>Assign To</label><select id='SUser' class='form-control Users' style='padding-top:0.10rem !important;padding-bottom: 0.10rem;font-size: 12px;position: absolute;top: 50%;transform: translate(-3%, -42%);'></select></div><div class='col-4 mb-3'><button type='button' style='font-weight: bold;'class='mt-4 btn btn-sm btn-warning modal_btn' onclick='Update()'>Assign</button></div></div></div><div class='col-12 col-lg-8 col-md-12'><div class='row m-0 mt-2 border' style='border:1px solid #acb6c6 !important;border-radius: 11px;background: #fff3e3;'><div style='width:100%;'><label class='control-label' style='background: white;position: absolute;top:2%;right: 7%;height:10px;'>Add Status</label></div><div class='col-12 col-md-3 col-lg-3'><label class='control-label'>Date</label><input type='text' placeholder='dd-mm-yyyy TT:MM' id='datepicker',maxlength=0 onkeypress ='return /[]/i.test(event.key)' class='form-control datepic' style='font-size: 12px;'/></div><div class='col-12 col-md-3 col-lg-3'><label class='control-label'>Status</label><select id='Tkt_Status' class='form-control' style='padding-top: 0.10rem !important;padding-bottom: 0.10rem;font-size: 12px;'></select></div><div class='col-12 col-md-4 col-lg-4'><label class='control-label'>Remarks</label><input type='text' id='Tkt_Remarks' class='form-control mb-3' style='font-size:0.675rem;'/></div><div class='col-12 col-md-2 col-lg-2' style='display:flex;justify-content:center;align-items: center;'><button type='button' class='btn btn-info btn-pill modal_btn' id='Tkt_Save' style='font-size: 0.6375rem;font-weight:bold;margin-top:9px;' onclick='Status_Update()'>Save</button></div></div></div></div>";
+                    }
+
+                    $("#Tkt_Content").html(tab);
+                    $("#Hide_Content").html(Upcontent);
+                    $("#Tkt_VDetails").html('View Details');
+                    $("#Tkt_Close").html('Close');
+
+                    $('label').css('color', '#920084').css('font-weight', '100').css('font-size', '13px');
+
+                    if (data[0].IMAGE_COUNT != 0) {
+                        $("#Tkt_Submit").html('View Images');
+                        $("#Tkt_Submit").removeClass('d-none')
+                    }
+                    else
+                        $("#Tkt_Submit").addClass('d-none')
+
+                    DatePicker_load();
+
+                }
+                else
+                    Toast_Alert(data, 'Error')
+
+
+                Hide_loader();
+            },
+            error: function (error) {
+
+                Hide_loader();
+                $('#Dash_Content').toggle(200);
+                Toast_Alert(error, 'Error')
+            }
+
+        });
+    }
+    //Assign the Ticket in Another User
+    function Update() {
+
+        var Ass_User = $('#SUser').val();
+        var tkt_id = $('#tkt_id').html().replace(/:/g, '').trim();
+
+        if (Ass_User != "") {
+
+            Show_loader();
+            $.ajax({
+                url: '/Home/GetData',
+                contentType: 'application/json; charset=utf-8;',
+                dataType: 'json',
+                data: '{"Type" : "ASSIGN_HEADTO_OTHER_PERSON","Assign_To" : "' + Ass_User + '","Ticket_Id" : "' + tkt_id + '"}',
+                method: 'post',
+                success: function (data) {
+
+                    if (typeof (data) != 'string') {
+
+                        if (data[0].TYPE === 'Success') {
+
+                            $('#Tkt_SubModal').toggle(200)
+                            Dash_Count();
+                        }
+
+                        Toast_Alert(data[0].RESULT, data[0].TYPE)
+
+                    }
+                    else
+                        Toast_Alert(data, 'Error');
+
+                    Hide_loader();
+                },
+                error: function (xhr, status, error) {
+
+                    Hide_loader();
+                    Toast_Alert(error, 'Error')
+
+                }
+
+            });
+        }
+        else
+            Toast_Alert('Choose the User', 'Error')
+    }
+    //Image Upload Function Start
+    function clearImageModal() {
+        $(".image_show_div").hide();
+    }
+
+    function ShowOnLoad(Ticket_Id, title, img) {
+        $("#TripSheet_span").html(Ticket_Id);
+        $("#imgtype_span").html(title);
+        $("#imagewindow").attr('src', img);
+        $("#imagewindow").css({ "object-fit": "cover" });
+        $(".image_show_div").show(200);
+        $("#img_download").attr('href', img);
+        $("#img_download").attr('download', 'TripSheet_No_' + Ticket_Id + '_' + title + '.jpg');
+    }
+
+    var img_fit = "";
+    function View_Tkt_Images(Ticket_Id) {
+
+        clearImageModal();
+        if (Ticket_Id) {
+
+            Show_loader();
+            img_fit = 'cover';
+            $.ajax({
+                type: "POST",
+                contentType: "application/json;charset=uft-8",
+                url: "/Home/LoadImagesByTicket_Id",
+                data: "{Ticket_Id : '" + Ticket_Id + "'}",
+                dataType: "json",
+                success: function (data) {
+
+                    if (data == 'Ended') {
+                        document.location.href = '/Login/Login';
+                        return false;
+                    }
+                    if (typeof (data) != 'string') {
+
+                        $(".image_option_div").empty();
+                        var c = 0;
+                        for (var i = 0; i < data.length; i++) {
+                            c = c + 1;
+                            var image_option_div = "";
+                            image_option_div = "<div class='col_img' onclick='image_option_fun(this)'>";
+                            image_option_div += "<div class='image_holder'>";
+                            image_option_div += "<img id='img" + c + "' src='../Library/images/Default_Image.png' /></div>";
+                            image_option_div += "<div class='col_lbl'>Image" + c + "</div></div>";
+                            $(".image_option_div").append(image_option_div);
+                            $("#img" + c).attr('src', data[i].ImageData);
+                            if (i == 0)
+                                ShowOnLoad(Ticket_Id, "Image" + c, data[i].ImageData);
+                        }
+
+                        $("#Image_popup").toggle(200);
+                    }
+                    else
+                        Toast_Alert("No Images for this tickets", 'Error')
+
+                    Hide_loader();
+                },
+                error: function (err) {
+
+                    Hide_loader();
+                    Toast_Alert(err, 'Error')
+                }
+            });
+        }
+    }
+
+    function image_option_fun(e) {
+
+        var img = $(e).find('img').attr('src');
+        var lbl = $(e).find('.col_lbl').html();
+        $("#imgtype_span").html(lbl);
+        $("#imagewindow").attr('src', img);
+        $("#imagewindow").css({ "object-fit": "cover" });
+        $(".image_show_div").show(200);
+        var Ticket_Id = $("#TripSheet_span").html();
+        $("#img_download").attr('href', img);
+        $("#img_download").attr('download', 'TripSheet_No_' + Ticket_Id + '_' + lbl + '.jpg');
+    }
+    //Image Upload Function End
+    function Show_Status() {
+
+        var Ticket_Id = $('#tkt_id').html().trim();
+
+        //if ($('#Tkt_Tbl_details').is(':visible')) {
+
+        //    // Table is visible, so hide it
+        //    $('#Tkt_Tbl_details').toggle();
+        //    $("#Tkt_VDetails").html('Show Details');
+
+        //}
+        //else {
+
+            Show_loader();
+            $.ajax({
+                url: '/Home/GetData',
+                contentType: 'application/json; charset=utf-8;',
+                dataType: 'json',
+                data: '{"Type" : "GET_STATUS_DETAILS","Ticket_Id" : "' + Ticket_Id + '"}',
+                method: 'post',
+                success: function (data) {
+
+                    if (typeof (data) != 'string') {
+
+                        var Closed_By = $('#Tkt_ClBy').html().replace(':','').trim()
+
+                        var Table = "";
+
+                        Table += "<div class='table-responsive' style='max-height:calc(100vh - 490px);scrollbar-width:thin;'><table class='table' id='Tkt_Tbl_details'><thead><tr style='font-size:11px;width:100%;max-height:50px;position:sticky;top:0;color: #ffffff !important;'>";
+                        Table += "<th class='Modal_Tbl'>SNo</th><th class='Modal_Tbl'>Status Date</th><th class='Modal_Tbl'>Status</th><th class='Modal_Tbl'>Remarks</th><th class='Modal_Tbl'>Updated By</th>";
+
+                        if (Closed_By == "")
+                            Table += "<th class='Modal_Tbl'>Actions</th>";
+
+                        Table += "</tr></thead><tbody>";
+
+                        for (i = 0; i < data.length; i++) {
+
+                            Table += "<tr class='table table-light' style='border-bottom: 1px solid #e5e9f2;'>";
+
+                            Table += "<td class='Modal_tr_td'>" + data[i].SNO + "</td><td class='Modal_tr_td'>" + data[i].STATUS_DATE + "</td><td class='Modal_tr_td'>" + data[i].STATUS + "</td><td class='Modal_tr_td'>" + data[i].REMARKS + "</td><td class='Modal_tr_td'>" + data[i].UPDATED_BY + "</td>";
+
+                            if (Closed_By == "")
+                                Table += "<td class='Modal_tr_td'>" + (data[i].UPDATED_BY == "@Session["UserCode"]" ? "<a style='color:red;' href='#' onclick='Delete_Track(this)'>Delete</a>" : "") + "</td>";
+
+                            Table += "</tr>";
+                        }
+
+                        Table += "</tbody></table></div>";
+                        $('#Tkt_Tbl').html(Table);
+                        $("#Tkt_VDetails").html('Hide Details');
+
+                    }
+                    else
+                        Toast_Alert(data, 'Error')
+
+                    Hide_loader();
+                },
+                error: function (error) {
+                    Toast_Alert(error, 'Error')
+                    Hide_loader();
+                }
+            });
+        //}
+
+    }
+    function Status_Update() {
+
+        var Date = $('#datepicker').val();
+        var Status = $('#Tkt_Status :selected').text();
+        var Remarks = $('#Tkt_Remarks').val();
+        var Ticket_Id = $('#tkt_id').html().replace(/:/g, '').trim();
+
+        if (Date != "" && Status != "" && Remarks != "" && Status != '---- Select ----') {
+
+            Show_loader();
+            $.ajax({
+                url: '/Home/GetData',
+                contentType: 'application/json; charset=utf-8;',
+                dataType: 'json',
+                data: '{"Type" : "ADD_STATUS","Date" : "' + Date + '","Ticket_Id" : "' + Ticket_Id + '","Status" : "' + Status + '","Remarks" : "' + Remarks + '"}',
+                method: 'post',
+                success: function (data) {
+
+                    if (typeof (data) != 'string') {
+
+                        if (data[0].TYPE === 'Success') {
+
+                            DatePicker_load();
+                            $('#Tkt_Status').prop('selectedIndex', 0);
+                            $('#Tkt_Remarks').val('');
+                            //$("#Tkt_VDetails").html('View Details');
+                            //$('#Tkt_Tbl_details').hide();
+                            Show_Status();
+                            //$('#BlinkModalStatus').html('LAST STATUS: ' + Status + ' (' + Remarks + ')');
+
+                        }
+                            Toast_Alert(data[0].RESULT, data[0].TYPE)
+
+                    }
+                    else
+                        Toast_Alert(data, 'Error');
+
+                    Hide_loader();
+                },
+                error: function (xhr, status, error) {
+
+                    Hide_loader();
+                    Toast_Alert(error, 'Error')
+
+                }
+
+            });
+
+        }
+        else {
+
+            if (Date == "")
+                Toast_Alert('Choose the Date!', 'Error')
+            else if (Status == "" || Status == '---- Select ----')
+                Toast_Alert('Choose the Status!', 'Error')
+            else
+                Toast_Alert('Enter the Remarks!', 'Error')
+
+        }
+
+    }
+    function DatePicker_load() {
+
+        flatpickr("#datepicker", {
+
+            dateFormat: "d-m-Y H:i:S",
+            minDate: "today",         // Set the minimum selectable date
+            defaultDate: new Date(),  // Pre-select today's date
+            disableMobile: true,      // Force desktop version on mobile devices
+            theme: "dark",            // Set to dark theme or customize with CSS
+            enableTime: true,         // Enable time selection
+            enableSeconds: true,
+            time_24hr: true,          // Enable 24-hour format (optional)
+            defaultHour: 12,          // Default time when no time is selected
+            defaultMinute: 0          // Default minute when no time is selected
+        });
+        $("#datepicker").removeAttr("readonly");
+
+    }
+    function Delete_Track(obj) {
+
+        // Get the closest row (tr) of the clicked anchor
+        var row = $(obj).closest('tr');
+        // Find the first and second 'td' in the row (assuming first is name, second is age)
+        date = row.find('td').eq(1).text(); // Get text of the first 'td' (name)
+        Status = row.find('td').eq(2).text();  // Get text of the second 'td' (age)
+        tkt_id = $('#tkt_id').html().trim();
+        $('#CNF_Modal').toggle(200)
+
+    }
+    //load the Count in Dashboard
+    $(window).on('load', () => {
+
+        Dash_Count();
+
+    });
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, "/Home/Index");
+    }
+</script>

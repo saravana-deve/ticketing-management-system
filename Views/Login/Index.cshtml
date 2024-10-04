@@ -1,0 +1,59 @@
+﻿@model TMS.Models.Login.Login
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Library/CSS/Login.css" rel="stylesheet" />
+    <title>Login</title>
+    <script src="~/Library/Scripts/jquery.min.js"></script>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="container">
+            <div class="screen" style="overflow: hidden;">
+                <div class="screen__content" style="padding: 10px;">
+                    <div class="login__field">
+                        <i class="login__icon fas fa-user"></i>
+                        @Html.EditorFor(model => model.UCode, new { htmlAttributes = new { @class = "login__input", @placeholder = "User name / Email" } })<br />
+                        @Html.ValidationMessageFor(model => model.UCode, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="login__field">
+                        <i class="login__icon fas fa-lock"></i>
+                        @Html.EditorFor(model => model.Pword, new { htmlAttributes = new { @class = "login__input", @placeholder = "Password" } })
+                        <br />
+                        @Html.ValidationMessageFor(model => model.Pword, "", new { @class = "text-danger" })
+                    </div>
+                    <button class="button login__submit">
+                        <span class="button__text" style="width: -webkit-fill-available;">Log In Now</span>
+                        <i class="button__icon fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="screen__background">
+                    <span class="screen__background__shape screen__background__shape4"></span>
+                    <span class="screen__background__shape screen__background__shape3"></span>
+                    <span class="screen__background__shape screen__background__shape2"></span>
+                    <span class="screen__background__shape screen__background__shape1"></span>
+                </div>
+            </div>
+        </div>
+    }
+</body>
+</html>
+<script>
+    $(() => {
+
+        if('@TempData["LAlert"]'!='')
+            alert('@TempData["LAlert"]')
+
+    });
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, "/Login/Index");
+    }
+
+</script>

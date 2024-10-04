@@ -1,0 +1,160 @@
+﻿@model TMS.Models.Rights.Rights
+
+@{
+    ViewBag.Title = "Rights Master";
+    Layout = "~/Views/Shared/_MasterPage.cshtml";
+}
+<style>
+    .content {
+        padding-top: .1rem !important;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row d-flex justify-content-center">
+        <h4 style="color:#1d1f26; font-weight:bold;">@ViewBag.Title</h4>
+    </div>
+    <div class="card card-default mb-2">
+        <div class="card-body px-1 pt-1 pb-2">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    @Html.LabelFor(model => model.Rights_Id, htmlAttributes: new { @class = "control-label " })
+                    @Html.EditorFor(model => model.Rights_Id, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                    @Html.HiddenFor(model => model.Rights_Id, new { @id = "Temp_DepC" })
+                    @Html.HiddenFor(model => model.Btn, new { @id = "btn_type" })
+                    @Html.ValidationMessageFor(model => model.Rights_Id, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    @Html.LabelFor(model => model.Rights_Name, htmlAttributes: new { @class = "control-label " })
+                    @Html.EditorFor(model => model.Rights_Name, new { htmlAttributes = new { @class = "form-control", @autofocus = "autofocus", @Maxlength = 50, @onkeypress = "return /[a-zA-Z ]/i.test(event.key)" } })
+                    @Html.ValidationMessageFor(model => model.Rights_Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-4">
+
+                    <input type="submit" value="@Model.Btn" class="btn btn-success btn-sm Loader_On" id="btn_Save" style="width: 98px;margin-top:1.1rem !important;" />
+                    <input type="button" value="Clear" class="btn btn-dark btn-sm Loader_On" style="margin-top:1.1rem !important;" onclick="location.reload(true);" />
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-default mb-1">
+        <div class="table-responsive" style="max-height:calc(95vh - 247px);scrollbar-width: thin;">
+            <table class="table table-bordered">
+                <thead>
+                    <tr style="position: sticky !important; top: 0px;background-color: #ffd6d6;">
+                        <th scope="col">S.No</th>
+                        <th scope="col">Rights Id</th>
+                        <th scope="col">Rights Name</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.List != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model.List)
+                        {
+                            <tr>
+                                <td scope="row">
+                                    @i
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Rights_Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Rights_Name)
+                                </td>
+                                <th class="text-center">
+                                    <a onclick="Edit('@item.Rights_Id','@item.Rights_Name')">
+                                        <i class="mdi mdi-open-in-new mx-2 Iconfor_ED"></i>
+                                    </a>
+                                    @*<a href="@Url.Action("Delete",new {Rights_Id=item.Rights_Id,Rights_Name=item.Rights_Name })" onclick="return confirm('Are Sure wants to Delete!');">
+                                            <i class="mdi mdi-close text-danger"></i>
+
+                                        </a>*@
+                                    <a href="#" onclick="Delete('@item.Rights_Id')">
+                                        <i class="mdi mdi-close text-danger "></i>
+
+                                    </a>
+
+                                </th>
+
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td scope="row" colspan="4" class="text-center font-weight-bold " style="background:#fefbee;">
+                                No Records!
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+@if (TempData["R_Alert"] != null)
+{
+    <script>
+        $(()=> {
+
+            Toast_Alert('@TempData["R_Alert"]','@TempData["Alert_Type"]')
+        })
+    </script>
+}
+<script>
+    $(document).ready(() => {
+
+        $('#Cnf_Ok').click(() => {
+
+            $('#CNF_Modal').toggle(200)
+
+            $.ajax({
+                url: '/Rights/Delete',
+                contentType: 'application/json; charset=utf-8;',
+                dataType: 'json',
+                data: '{"Rights_Id" : "' + Global + '"}',
+                method: 'post',
+                success: function (data) {
+
+                    if (typeof (data) != "string") {
+
+                        location.reload(true)
+                        //Toast_Alert(data[0].RESULT, data[0].TYPE)
+                        //setTimeout(() => { location.reload(true),1 });
+                    }
+                    else
+                        Toast_Alert(data, 'Error')
+
+
+                },
+                error: function (xhr, status, error) {
+
+                    Toast_Alert(error, 'Error')
+
+                }
+
+            });
+
+        });
+
+    });
+    function Edit(Rights_Id, Rights_Name) {
+
+        $('#Rights_Id').val(Rights_Id);
+        $('#Temp_DepC').val($('#Rights_Id').val())
+        $('#Rights_Name').val(Rights_Name);
+        $('#btn_type').val('Update')
+        $('#btn_Save').val($('#btn_type').val());
+    }
+    function Delete(Rights_Id) {
+
+        Global = Rights_Id
+        $('#CNF_Modal').toggle(200)
+    }
+</script>

@@ -1,0 +1,101 @@
+﻿@* Confirmation Modal *@
+<div class="modal modal-backdrop " id="CNF_Modal"  role="dialog" aria-labelledby="CNF_ModalLabel" data-backdrop="static" style="z-index: 1053;">
+    <div class="modal-dialog" role="document" style="font-family:poppins !important;">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" style="color:rgb(252, 151, 1);font-weight: bold;" id="CNF_ModalLabel"><i class="mdi mdi-alert-circle-outline"></i> Confirmation! </h5>
+                <button type="button" class="close" onclick="$('#CNF_Modal').toggle(200)" aria-label="Close">
+                    <span >&times;</span>
+                </button>
+            </div>
+            <div class="modal-body modal_Setup" style="padding: 3px 7px 3px 41px;">
+                Are Sure to Delete!
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-primary btn-pill modal_btn" id="Cnf_Ok">Ok</button>
+                <button type="button" class="btn btn-danger btn-pill modal_btn" onclick="$('#CNF_Modal').toggle(200)">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+@* Dashboard Grid Modal *@
+<div class="modal modal-backdrop" id="Dash_Content"  role="dialog" aria-labelledby="Dash_Content"
+      data-backdrop="static">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:black;font-weight: bold;width: 100%;" id="Modal_Head"></h5>
+                <button type="button" class="close Dash_Con_Close" onclick="$('#Dash_Content').toggle(200)" aria-label="Close">
+                    <span >&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive" id="modalContent" style="max-height:350px;scrollbar-width: thin;white-space:nowrap;">
+                    <table class="table table-success" id="Tbl_Dash"></table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-pill modal_btn Dash_Con_Close" style="font-size: 0.6375rem;font-weight:bold;" onclick="$('#Dash_Content').toggle(200)">Close</button>
+                @*<button type="button" class="btn btn-primary btn-pill modal_btn">Save Changes</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+@* Ticket Sub Modal *@
+<div class="modal modal-backdrop" id="Tkt_SubModal"  role="dialog" aria-labelledby="Tkt_SubModal" style="padding-right: 17px;font-family:poppins;" data-backdrop="static">
+    <div class="modal-dialog modal-xxl" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title" style="color:black;font-weight: bold;" id="Tkt_Modal_Head"></h5>
+                <span id="BlinkModalStatus" class="blinking" style="text-align-last: center; font-size: 14px; font-weight: bold"></span>
+                <button type="button" class="close" onclick="$('#Tkt_SubModal').toggle(200)" aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pt-0">
+                <div id="Tkt_Content">
+
+                </div>
+                <div id="Hide_Content">
+
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-success btn-pill modal_btn" id="Tkt_VDetails" style="font-size:0.6375rem;"></button>          
+                <button type="button" class="btn btn-primary btn-pill modal_btn" id="Tkt_Submit" style="font-size: 0.6375rem;"></button>
+                <button type="button" class="btn btn-danger btn-pill modal_btn" id="Tkt_Close" onclick="$('#Tkt_SubModal').toggle(200)" style="font-size: 0.6375rem;font-weight:bold;"></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- TripSheet Images Model -->
+<div class="modal modal-backdrop" id="Image_popup">
+    <div class="back_drop" onclick="$('#Image_popup').toggle(200);"></div>
+    <div class="modal_sizing modal-dialog modal-md">
+        <div class="modal-content bg-white" style="font-family: poppins">
+            <div class="modal-header" style="position: relative;">
+                <div class="col-lg-12">
+                    <div class="row p-0">
+                        <div class="col-10">
+                            <span>Image for Ticket Id : </span>&nbsp;<span id="TripSheet_span"></span>&nbsp;<span id="imgtype_span"></span>
+                        </div>
+                        <div class="col-2">
+                            <button type="button" id="notify_xbtn" class="close" onclick="$('#Image_popup').toggle(200);">&times;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body imagediv_container absolute-center">
+                <div class="image_show_div">
+                    <img id="imagewindow" src="~/Library/Images/Default_Image.png" />
+                    <button type="button" id="imageclose" onclick="$('.image_show_div').toggle(200);">&times;</button>
+                </div>
+                <div class="image_option_div"></div>
+            </div>
+            @*<div class="modal-footer notify_footer" style="padding: 0 30px 15px 30px; justify-content: flex-start;">
+                <a id="img_download" href="#" download="#"><i class="mdi mdi-download"></i>Download</a>
+            </div>*@
+        </div>
+    </div>
+</div>

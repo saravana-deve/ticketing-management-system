@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    @Html.Partial("_Head")
+    <!--Scripts -->
+    @Scripts.Render("~/Scripts/Master")
+</head>
+<body class="navbar-fixed sidebar-fixed no-select" id="body">
+    <div class="position-absolute" id="Loader">
+        <div class="d-flex align-items-center justify-content-center" id="loadScreen">
+            <div class="sk-wave">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_Modals")
+    <script>
+        NProgress.configure({ showSpinner: false });
+        NProgress.start();
+    </script>
+    <div id="toaster"></div>
+    <!-- ====================================
+    ——— WRAPPER
+    ===================================== -->
+    <div class="wrapper">
+        <!-- ====================================
+          ——— LEFT SIDEBAR WITH OUT FOOTER
+        ===================================== -->
+        <aside class="left-sidebar sidebar-dark" id="left-sidebar">
+            @Html.Partial("_Aside")
+        </aside>
+        <!-- ====================================
+        ——— PAGE WRAPPER
+        ===================================== -->
+        <div class="page-wrapper">
+            <!-- Header -->
+            <header class="main-header" id="header">
+                @Html.Partial("_Header")
+            </header>
+            <!-- ====================================
+            ——— CONTENT WRAPPER
+            ===================================== -->
+            <div class="content-wrapper">
+                <div class="content">
+                    @RenderBody()
+                </div>
+            </div>
+            <!-- Footer -->
+            <footer class="footer mt-auto">
+                <div class="copyright bg-white py-1 px-2">
+                    <p>
+                        Repute Infotech and Enterprises LTD Copyright &copy; <span id="copy-year"></span>
+                    </p>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <!-- Card Offcanvas -->
+    <div class="card card-offcanvas" id="contact-off">
+        <div class="card-header">
+            <h2>Contacts</h2>
+            <a href="#" class="btn btn-primary btn-pill px-4">Add New</a>
+        </div>
+    </div>
+    <script>
+        var  Global = '';
+        var year = new Date().getFullYear();
+        document.getElementById("copy-year").innerHTML = year;
+
+        $(document).ready(() => {
+
+            Event_Stop();
+
+            $(document).keydown((e) => {
+
+                if (e.keyCode == 27) {
+
+                    //Removes validation from input-fields
+                    $('.input-validation-error').addClass('input-validation-valid');
+                    $('.input-validation-error').removeClass('input-validation-error');
+                    $('.field-validation-error').html('')
+
+                }
+            });
+
+            $('.Loader_On').click(() => {
+
+                Show_loader();
+
+            });
+        });
+        $(document).ajaxStart(()=> {
+
+
+        });
+        function Show_loader() {
+
+        $('#Loader').show()
+        }
+        function Hide_loader() {
+
+            $("#Loader").fadeOut(300, function () {
+                $('#Loader').hide()
+            });
+        }
+        function Event_Stop() {
+
+            $('input[type=checkbox]').attr('onkeydown', 'return  event.keyCode != 13');
+            $('input[type=text]').attr('onkeydown', 'return  event.keyCode != 13');
+            $('input[type=radio]').attr('onkeydown', 'return  event.keyCode != 13');
+            $('.form-control').attr('autocomplete', 'off');
+            $('.form-control').attr('spellCheck', false);
+
+        }
+        function Eye(Class,txtId) {
+
+            var x = document.getElementById(txtId);
+            $(Class).toggleClass("mdi-eye-off");
+
+            if (x.style["-webkit-text-security"] != '')
+                x.style["-webkit-text-security"] = '';
+            else
+                x.style["-webkit-text-security"] = 'Square';
+        }
+
+        function callToaster(positionClass) {
+
+            toastr.options = {
+              closeButton: true,
+              debug: false,
+              newestOnTop: false,
+              progressBar: true,
+              positionClass: positionClass,
+              preventDuplicates: false,
+              onclick: null,
+              showDuration: "300",
+              hideDuration: "1000",
+              timeOut: "5000",
+              extendedTimeOut: "1000",
+              showEasing: "swing",
+              hideEasing: "linear",
+              showMethod: "fadeIn",
+              hideMethod: "fadeOut",
+            };
+            if ('@TempData["LogedIn"]' != "")
+                toastr.info("Welcome to Ticketing Management System", "@Session["UserName"]");
+
+        }
+
+         function Toast_Alert(Msg,Type) {
+
+            toastr.options = {
+              closeButton: true,
+              debug: false,
+              newestOnTop: false,
+              progressBar: true,
+              positionClass: "toast-top-right",
+              preventDuplicates: false,
+              onclick: null,
+              showDuration: "300",
+              hideDuration: "1000",
+              timeOut: "5000",
+              extendedTimeOut: "1000",
+              showEasing: "swing",
+              hideEasing: "linear",
+              showMethod: "fadeIn",
+              hideMethod: "fadeOut",
+             };
+
+             if (Type == "Success")
+                 toastr.success(Msg, Type);
+             else if (Type == "Info")
+                 toastr.info(Msg, Type);
+             else if (Type == "Warning")
+                 toastr.warning(Msg, Type);
+             else //if (Type == "Error" || Type == "")
+                 toastr.error(Msg, "Error");
+
+        }
+        //History Clear
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+    @Scripts.Render("~/Scripts/Master_Charts")
+    <script src="~/Library/Scripts/spin.min.js"></script>
+    <script src="~/Library/Scripts/ladda.min.js"></script>
+
+</body>
+</html>
